@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part5YesOrNoController">
+   <children>
+      <Text fx:id="referencedtext" strokeType="OUTSIDE" strokeWidth="0.0" text="¿Estás seguro de borrarlo?" textAlignment="CENTER" wrappingWidth="600.431640625" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Text>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="93.0" prefWidth="600.0" spacing="150.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#yesdelete" text="Sí" />
+            <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#nodelete" text="No" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>
