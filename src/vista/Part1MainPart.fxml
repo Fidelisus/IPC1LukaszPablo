@@ -44,7 +44,7 @@
                         <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
-                  <Button mnemonicParsing="false" prefHeight="67.0" text="Anadir tutoria para el dia seleccionado" />
+                  <Button fx:id="anadirTutoriaBoton" mnemonicParsing="false" onAction="#anadirTutoria" prefHeight="67.0" text="Anadir tutoria para el dia seleccionado" />
                </children>
             </VBox>
             <VBox prefHeight="765.0" prefWidth="512.0" spacing="15.0">

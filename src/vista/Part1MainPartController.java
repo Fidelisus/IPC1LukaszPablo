@@ -57,6 +57,8 @@ public class Part1MainPartController implements Initializable {
     private BorderPane caledarioPane;
     @FXML
     private Button asignaturasBoton;
+    @FXML
+    private Button anadirTutoriaBoton;
     /**
      * Initializes the controller class.
      */
@@ -89,6 +91,7 @@ public class Part1MainPartController implements Initializable {
         tu.getAsignatura().setDescripcion("descripcion");
         LocalTime t = LocalTime.now(); 
         tu.setInicio(t);
+        tu.setEstado(Tutoria.EstadoTutoria.PEDIDA);
         datos.add(tu);
         
         Tutoria tu1 = new Tutoria();
@@ -97,7 +100,9 @@ public class Part1MainPartController implements Initializable {
         tu1.getAsignatura().setDescripcion("asig");
         t = LocalTime.of(11, 30); 
         tu1.setInicio(t);
+        tu1.setEstado(Tutoria.EstadoTutoria.ANULADA);
         datos.add(tu1);
+        
         AccesoBD.getInstance().salvar();
         
         if(!datos.isEmpty()){
@@ -112,7 +117,15 @@ public class Part1MainPartController implements Initializable {
             //LocalTime tt = LocalTime.now(); 
         //tutoria.setInicio(tt);
                 TextField tiempo = new TextField(tutoria.getInicio().toString());
-                split.getItems().addAll(datos, tiempo);
+                TextField estado = new TextField("Estado: " + tutoria.getEstado());
+                /*
+                switch(tutoria.getEstado()){
+                    case Tutoria.EstadoTutoria.ANULADA:
+                        split.setStyle("-fx-background-color: cadetblue");
+                        break;
+                }*/
+                
+                split.getItems().addAll(datos, tiempo, estado);
                 tutoriasDelDiaBox.getChildren().addAll(split);
         }
         
@@ -130,8 +143,17 @@ public class Part1MainPartController implements Initializable {
         ventana2.setScene(scene);
         ventana2.initModality(Modality.APPLICATION_MODAL);
         ventana2.showAndWait();
-        
-        
+    }
+    
+        @FXML
+    private void anadirTutoria(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/vista/Part2SeleccionarTutoria.fxml"));
+        Scene scene = new Scene(root);
+        Stage ventana2 = new Stage();
+        ventana2.setTitle("Anadir Asignatura");
+        ventana2.setScene(scene);
+        ventana2.initModality(Modality.APPLICATION_MODAL);
+        ventana2.showAndWait();
     }
 }
 

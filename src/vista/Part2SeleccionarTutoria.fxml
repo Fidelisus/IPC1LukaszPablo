@@ -24,14 +24,14 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir nuevo estudiante" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir nuevo estudiante" />
             <Button alignment="TOP_LEFT" mnemonicParsing="false" text="cancel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir estudiante de base de datos" />
-            <TextField text="Nombre, apellido y email de estudiante elegido" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir estudiante de base de datos" GridPane.rowIndex="1" />
+            <TextField text="Nombre, apellido y email de estudiante elegido" GridPane.columnIndex="1" />
             <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="174.0" text="Anadir tutoria" GridPane.rowIndex="6" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir asignatura de base de datos" GridPane.rowIndex="3" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir nueva asigantura" GridPane.rowIndex="4" />
-            <TextField text="Codigo y descripcion de asignatura" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir asignatura de base de datos" GridPane.rowIndex="4" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="246.0" text="Elegir nueva asigantura" GridPane.rowIndex="3" />
+            <TextField text="Codigo y descripcion de asignatura" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>
