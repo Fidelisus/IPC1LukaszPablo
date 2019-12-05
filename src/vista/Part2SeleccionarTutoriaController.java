@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author Lenovo
  */
-public class Part2SeleccionarTiempoDeTutoriaController implements Initializable {
+public class Part2SeleccionarTutoriaController implements Initializable {
 
     /**
      * Initializes the controller class.
