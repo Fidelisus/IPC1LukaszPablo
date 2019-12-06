@@ -37,7 +37,7 @@ import static javafx.scene.paint.Color.BLACK;
  */
 public class Part5AddOrDeleteStudentController implements Initializable {
 
-    private ObservableList<Alumno> datos = null;
+    public ObservableList<Alumno> datos = null;
 
     @FXML
     private Button addButton;
@@ -151,4 +151,5 @@ public class Part5AddOrDeleteStudentController implements Initializable {
             }
         }
     }
+
 }

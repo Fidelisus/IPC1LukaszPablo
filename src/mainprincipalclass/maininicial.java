@@ -20,7 +20,7 @@ public class maininicial extends Application {
         root = FXMLLoader.load(getClass().getResource("/vista/Part1MainPart.fxml"));
         
         Scene scene = new Scene(root);
-        stage.setTitle("Welcome ");
+        stage.setTitle("Bienvenido ");
         stage.setScene(scene);
         stage.show();
     }

@@ -74,7 +74,7 @@ public class Part1MainPartController implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("/vista/Part5AddOrDeleteStudent.fxml"));
         Scene scene = new Scene(root);
         Stage ventana2 = new Stage();
-        ventana2.setTitle("Add/Modify/Delete Student");
+        ventana2.setTitle("Gestionar Alumno");
         ventana2.setScene(scene);
         ventana2.initModality(Modality.APPLICATION_MODAL);
         ventana2.showAndWait();
@@ -136,10 +136,10 @@ public class Part1MainPartController implements Initializable {
     
     @FXML
     private void scenep6(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/parte6/Part6AddOrDeleteSubject.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/AddAsignatura/Part6AddOrDeleteSubject.fxml"));
         Scene scene = new Scene(root);
         Stage ventana2 = new Stage();
-        ventana2.setTitle("Gestionamiento de Asignaturas");
+        ventana2.setTitle("Gestionar asignaturas");
         ventana2.setScene(scene);
         ventana2.initModality(Modality.APPLICATION_MODAL);
         ventana2.showAndWait();
@@ -147,10 +147,10 @@ public class Part1MainPartController implements Initializable {
     
         @FXML
     private void anadirTutoria(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/vista/Part2SeleccionarTutoria.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
         Scene scene = new Scene(root);
         Stage ventana2 = new Stage();
-        ventana2.setTitle("Anadir Asignatura");
+        ventana2.setTitle("Añadir Tutoría");
         ventana2.setScene(scene);
         ventana2.initModality(Modality.APPLICATION_MODAL);
         ventana2.showAndWait();
