@@ -1,19 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox prefHeight="557.0" prefWidth="1144.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part1MainPartController">
+
+<GridPane prefHeight="567.0" prefWidth="1157.0" vgap="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part1MainPartController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="771.9999694824219" minWidth="10.0" prefWidth="630.26669921875" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="771.9999694824219" minWidth="0.0" prefWidth="35.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1136.5333251953125" minWidth="10.0" prefWidth="522.1999999999999" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
+      <VBox spacing="15.0" GridPane.columnIndex="2">
+         <children>
+            <BorderPane prefHeight="15.0">
+               <center>
+                  <Text fx:id="fechaActual" strokeType="OUTSIDE" strokeWidth="0.0" text="11.12.2019" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Text>
+               </center>
+            </BorderPane>
+            <HBox prefHeight="41.0" spacing="40.0">
+               <children>
+                  <Button fx:id="anadirTutoriaBoton" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirTutoria" prefHeight="59.0" prefWidth="98.0" text="Anadir">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="anular" minWidth="-Infinity" mnemonicParsing="false" onAction="#anular" prefHeight="45.0" prefWidth="91.0" text="Anular">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="confirmar" minWidth="-Infinity" mnemonicParsing="false" onAction="#confirmar" prefHeight="45.0" text="Confirmar">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="noAsistida" minWidth="-Infinity" mnemonicParsing="false" onAction="#noAsistida" prefHeight="45.0" prefWidth="101.0" text="No asistida">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <BorderPane prefHeight="26.0" prefWidth="513.0">
+               <center>
+                  <Button fx:id="anadirComentario" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirComentario" prefHeight="22.0" text="Anadir commentario" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </center>
+            </BorderPane>
+            <BorderPane>
+               <center>
+                  <TableView fx:id="tabelaTutorias">
+                    <columns>
+                      <TableColumn fx:id="nombreColumn" minWidth="-1.0" prefWidth="300.0" text="Codigo y nombre" />
+                      <TableColumn fx:id="duracionColumn" prefWidth="100.0" text="Duracion" />
+                        <TableColumn fx:id="estadoColumn" prefWidth="100.0" text="Estado" />
+                    </columns>
+                  </TableView>
+               </center>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </BorderPane>
+         </children>
+      </VBox>
       <VBox fx:id="calendarioBox" prefHeight="558.0" prefWidth="621.0" spacing="20.0">
          <children>
-            <BorderPane fx:id="caledarioPane" prefHeight="418.0" prefWidth="567.0" />
+            <BorderPane fx:id="caledarioPane" prefHeight="381.0" prefWidth="612.0" />
             <BorderPane prefHeight="112.0" prefWidth="674.0">
                <top>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre " BorderPane.alignment="CENTER">
@@ -39,49 +112,5 @@
             </BorderPane>
          </children>
       </VBox>
-      <VBox prefHeight="558.0" prefWidth="521.0" spacing="15.0">
-         <children>
-            <BorderPane prefHeight="22.0" prefWidth="512.0">
-               <center>
-                  <Text fx:id="fechaActual" strokeType="OUTSIDE" strokeWidth="0.0" text="11.12.2019" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="23.0" />
-                     </font>
-                  </Text>
-               </center>
-            </BorderPane>
-            <HBox prefHeight="41.0" prefWidth="512.0" spacing="15.0">
-               <children>
-                  <Button fx:id="anadirTutoriaBoton" mnemonicParsing="false" onAction="#anadirTutoria" prefHeight="59.0" prefWidth="98.0" text="Anadir">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="91.0" text="Anular">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="91.0" text="Confirmar">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="187.0" text="Anadir commentario">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-            <TableView fx:id="tabelaTutorias" prefHeight="419.0">
-              <columns>
-                <TableColumn fx:id="nombreColumn" minWidth="-1.0" prefWidth="250.0" text="Codigo y nombre" />
-                <TableColumn fx:id="duracionColumn" prefWidth="150.0" text="Duracion" />
-                  <TableColumn fx:id="estadoColumn" prefWidth="112.0" text="Estado" />
-              </columns>
-            </TableView>
-         </children>
-      </VBox>
    </children>
-</HBox>
+</GridPane>

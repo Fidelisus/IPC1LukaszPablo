@@ -10,9 +10,14 @@ import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.IOException;
 import java.net.URL;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import static java.time.temporal.ChronoUnit.MINUTES;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -43,6 +48,9 @@ import modelo.Asignatura;
 import modelo.Tutoria;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.text.Text;
 
 /**
@@ -72,6 +80,14 @@ public class Part1MainPartController implements Initializable {
     private ObservableList<Tutoria> tutoriasDia;
     @FXML
     private Text fechaActual;
+    @FXML
+    private Button anular;
+    @FXML
+    private Button confirmar;
+    @FXML
+    private Button noAsistida;
+    @FXML
+    private Button anadirComentario;
 
     /**
      * Initializes the controller class.
@@ -89,6 +105,8 @@ public class Part1MainPartController implements Initializable {
         tu.getAsignatura().setDescripcion("descripcion");
         LocalTime t = LocalTime.of(13, 10);
         tu.setInicio(t);
+        Duration dur = Duration.of(30, MINUTES);
+        tu.setDuracion(dur);
         LocalDate d = LocalDate.of(2019, Month.DECEMBER, 3);
         tu.setFecha(d);
         tu.setEstado(Tutoria.EstadoTutoria.PEDIDA);
@@ -100,30 +118,36 @@ public class Part1MainPartController implements Initializable {
         tu1.getAsignatura().setDescripcion("asig");
         t = LocalTime.of(11, 30);
         tu1.setInicio(t);
-        d = LocalDate.of(2019, Month.MARCH, 6);
+        dur = Duration.of(40, MINUTES);
+        tu1.setDuracion(dur);
+        d = LocalDate.of(2019, Month.DECEMBER, 6);
         tu1.setFecha(d);
-        tu1.setEstado(Tutoria.EstadoTutoria.ANULADA);
-        
+        tu1.setEstado(Tutoria.EstadoTutoria.PEDIDA);
+
         Tutoria tu2 = new Tutoria();
         tu2.setAsignatura(new Asignatura());
         tu2.getAsignatura().setCodigo("BBB");
         tu2.getAsignatura().setDescripcion("desc");
         t = LocalTime.of(9, 30);
         tu2.setInicio(t);
+        dur = Duration.of(60, MINUTES);
+        tu2.setDuracion(dur);
         d = LocalDate.of(2019, Month.DECEMBER, 6);
         tu2.setFecha(d);
-        tu2.setEstado(Tutoria.EstadoTutoria.ANULADA);
-        
+        tu2.setEstado(Tutoria.EstadoTutoria.PEDIDA);
+
         Tutoria tu3 = new Tutoria();
         tu3.setAsignatura(new Asignatura());
         tu3.getAsignatura().setCodigo("VVC");
         tu3.getAsignatura().setDescripcion("uuuuu");
-        t = LocalTime.of(11, 30);
+        t = LocalTime.of(13, 30);
         tu3.setInicio(t);
+        dur = Duration.of(70, MINUTES);
+        tu3.setDuracion(dur);
         d = LocalDate.of(2019, Month.DECEMBER, 6);
         tu3.setFecha(d);
-        tu3.setEstado(Tutoria.EstadoTutoria.ANULADA);
-        
+        tu3.setEstado(Tutoria.EstadoTutoria.PEDIDA);
+
         datos.add(tu1);
         datos.add(tu2);
         datos.add(tu3);
@@ -134,7 +158,7 @@ public class Part1MainPartController implements Initializable {
             return str;
         });
         duracionColumn.setCellValueFactory(fila -> {
-            String value = fila.getValue().getInicio().toString();
+            String value = fila.getValue().getInicio().toString() + " - " + fila.getValue().getInicio().plus(fila.getValue().getDuracion()).toString();
             StringProperty str = new SimpleStringProperty(value);
             return str;
         });
@@ -143,7 +167,7 @@ public class Part1MainPartController implements Initializable {
             StringProperty str = new SimpleStringProperty(value);
             return str;
         });
-        
+
         visualizarTutoriasDelDia();
     }
 
@@ -151,15 +175,17 @@ public class Part1MainPartController implements Initializable {
         datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
         
         tutoriasDia = FXCollections.observableArrayList();
-        //System.out.println(datePicker.getValue());
-        for(Tutoria tutoria : datos){
-            if(tutoria.getFecha() != null && tutoria.getFecha().compareTo(datePicker.getValue()) == 0){
-                tutoria.setEstado(Tutoria.EstadoTutoria.PEDIDA);
+
+        for (Tutoria tutoria : datos) {
+            //System.out.println(tutoria.getEstado());
+            if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(datePicker.getValue()) == 0) {
+                //tutoria.setEstado(Tutoria.EstadoTutoria.PEDIDA);
                 tutoriasDia.add(tutoria);
             }
-        } 
+        }
+        tutoriasDia.sort(Comparator.comparing(Tutoria::getInicio));
         tabelaTutorias.setItems(tutoriasDia);
-        
+        tabelaTutorias.refresh();
         fechaActual.setText(datePicker.getValue().toString());
     }
 
@@ -176,10 +202,79 @@ public class Part1MainPartController implements Initializable {
             //popupContent.set  .setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             caledarioPane.setCenter(popupContent);
             datePicker.valueProperty().addListener((a, b, c) -> visualizarTutoriasDelDia());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void anular(ActionEvent event) {
+        if (!datos.isEmpty() && tabelaTutorias.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("AVISO");
+            alert.setHeaderText("Estás anulando una tutoria...");
+            alert.setContentText("¿Seguro que quieres continuar?");
+            Optional<ButtonType> result = alert.showAndWait();
+            
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                for(Tutoria tutoria : datos){
+                    if(tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha() &&
+                            tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()){
+                        tutoria.setEstado(Tutoria.EstadoTutoria.ANULADA);
+                    }
+                }
+            }
+        }
+        AccesoBD.getInstance().salvar();
+        visualizarTutoriasDelDia();
+    }
+
+    @FXML
+    private void confirmar(ActionEvent event) {
+        if (!datos.isEmpty() && tabelaTutorias.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("AVISO");
+            alert.setHeaderText("Estás confirmando una tutoria...");
+            alert.setContentText("¿Seguro que quieres continuar?");
+            Optional<ButtonType> result = alert.showAndWait();
+            
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                for(Tutoria tutoria : datos){
+                    if(tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha() &&
+                            tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()){
+                        tutoria.setEstado(Tutoria.EstadoTutoria.REALIZADA);
+                    }
+                }
+            }
+        }
+        AccesoBD.getInstance().salvar();
+        visualizarTutoriasDelDia();
+    }
+
+    @FXML
+    private void noAsistida(ActionEvent event) {
+                if (!datos.isEmpty() && tabelaTutorias.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("AVISO");
+            alert.setHeaderText("Estás marcando una tutoria como no asistida...");
+            alert.setContentText("¿Seguro que quieres continuar?");
+            Optional<ButtonType> result = alert.showAndWait();
+            
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                for(Tutoria tutoria : datos){
+                    if(tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha() &&
+                            tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()){
+                        tutoria.setEstado(Tutoria.EstadoTutoria.NO_ASISTIDA);
+                    }
+                }
+            }
+        }
+        AccesoBD.getInstance().salvar();
+        visualizarTutoriasDelDia();
+    }
+
+    @FXML
+    private void anadirComentario(ActionEvent event) {
     }
 
     class DiaCelda extends DateCell {
@@ -189,8 +284,7 @@ public class Part1MainPartController implements Initializable {
         @Override
         public void updateItem(LocalDate item, boolean empty) {
             super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
-            setStyle("-fx-font: 20px \"Arial\";");
-            // Show Weekends in blue color
+            //setStyle("-fx-font: 20px \"Arial\";");
             DayOfWeek day = DayOfWeek.from(item);
             if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
                 this.setTextFill(Color.ROSYBROWN);
