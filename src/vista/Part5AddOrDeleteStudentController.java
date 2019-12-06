@@ -22,9 +22,11 @@ import javafx.scene.control.TableView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 import modelo.Alumno;
 import accesoBD.AccesoBD;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import static javafx.scene.paint.Color.BLACK;
 
@@ -53,12 +55,9 @@ public class Part5AddOrDeleteStudentController implements Initializable {
     private TableColumn<Alumno, String> emailColumn;
     @FXML
     Label verificador;
- 
 
- 
     public void initializeModel() {
         datos = AccesoBD.getInstance().getTutorias().getAlumnosTutorizados();
-        //datos = FXCollections.observableArrayList(myData);
     }
 
     /**
@@ -67,23 +66,14 @@ public class Part5AddOrDeleteStudentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-
         initializeModel();
         studentsTable.setItems(datos);
-        
-                // TODOdelButton.disableProperty().bind(Bindings.not(studentsTable   
- //       studentsTable.getSelectionModel().selectedItemProperty().addListener(
- //               (obs, oldSelection, newSelection) -> {
- //                   if (studentsTable.getSelectionModel().selectedItemProperty() == null) {
- //                       modButton.setDisable(false) ;
- //                   }
- //               }
- //       );
+
         modButton.disableProperty().bind(Bindings.not(studentsTable.focusedProperty()));
         delButton.disableProperty().bind(Bindings.not(studentsTable.focusedProperty()));
         modButton.disableProperty().bind(Bindings.size(datos).isEqualTo(0));
         delButton.disableProperty().bind(Bindings.size(datos).isEqualTo(0));
-        
+
         nameColumn.setCellValueFactory(fila -> fila.getValue().nombreProperty());
         surnameColumn.setCellValueFactory(fila -> fila.getValue().apellidosProperty());
         emailColumn.setCellValueFactory(fila -> fila.getValue().emailProperty());
@@ -108,12 +98,10 @@ public class Part5AddOrDeleteStudentController implements Initializable {
         if (student != null) {
             datos.add(student);
             verificador.textFillProperty().set(BLACK);
-        verificador.setText("Alumno Añadido Correctamente");
-        } else{
-        verificador.setText("");
+            verificador.setText("Alumno Añadido Correctamente");
+        } else {
+            verificador.setText("");
         }
-
-        
 
         AccesoBD.getInstance().salvar();
     }
@@ -132,10 +120,8 @@ public class Part5AddOrDeleteStudentController implements Initializable {
             ventana3.initModality(Modality.APPLICATION_MODAL);
 
             ((Part5ComplementaryWindowController) miLoader.getController()).modifyStudent(studentsTable.getSelectionModel().getSelectedItem());
-            //((FXMLPersonaController) miLoader.getController()).setPersonaModificar(personasTable.getSelectionModel().getSelectedItem());
-
-            ventana3.showAndWait(); 
-            if(((Part5ComplementaryWindowController) miLoader.getController()).getValue() == true){
+            ventana3.showAndWait();
+            if (((Part5ComplementaryWindowController) miLoader.getController()).getValue() == true) {
                 verificador.textFillProperty().set(BLACK);
                 verificador.setText("Alumno Modificado Correctamente");
             } else {
@@ -149,29 +135,20 @@ public class Part5AddOrDeleteStudentController implements Initializable {
     private void deleteStudent(ActionEvent event) throws IOException {
 
         if (!datos.isEmpty() && studentsTable.getSelectionModel().getSelectedItem() != null) {
-            FXMLLoader miLoader = new FXMLLoader(getClass().getResource("/vista/Part5YesOrNo.fxml"));
-            Parent root = miLoader.load();
-
-            Scene scene = new Scene(root);
-            Stage ventana4 = new Stage();
-            ventana4.setTitle("");
-            ventana4.setScene(scene);
-            ventana4.setResizable(false);
-            ventana4.initModality(Modality.APPLICATION_MODAL);
-            ventana4.showAndWait();
-
-            if (((Part5YesOrNoController) miLoader.getController()).getValue()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("AVISO");
+            alert.setHeaderText("Estás borrando un alumno...");
+            alert.setContentText("¿Seguro que quieres continuar?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
                 datos.remove(studentsTable.getSelectionModel().getSelectedItem());
                 verificador.textFillProperty().set(BLACK);
                 verificador.setText("Alumno Borrado Correctamente");
                 AccesoBD.getInstance().salvar();
+
             } else {
                 verificador.setText("");
             }
-
         }
     }
 }
-
-  
-    

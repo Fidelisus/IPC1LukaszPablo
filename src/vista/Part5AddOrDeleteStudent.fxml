@@ -8,30 +8,28 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox maxHeight="880.0" maxWidth="1000.0" minHeight="300.0" minWidth="400.0" prefHeight="628.0" prefWidth="800.0" snapToPixel="false" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part5AddOrDeleteStudentController">
+<VBox maxHeight="880.0" maxWidth="1000.0" minHeight="300.0" minWidth="400.0" prefHeight="628.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part5AddOrDeleteStudentController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" minHeight="39.0" minWidth="400.0" prefHeight="78.0" prefWidth="800.0" text="Añade/Modifica/Borra Alumno" textAlignment="JUSTIFY" textFill="#12008a" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS">
+      <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#160cd3" strokeType="OUTSIDE" strokeWidth="0.0" text="Añadir/Modificar/Borrar Alumno" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="802.6708984375">
          <font>
             <Font size="40.0" />
          </font>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Label>
+      </Text>
       <HBox accessibleRole="BUTTON" alignment="CENTER" cache="true" prefHeight="103.0" prefWidth="640.0" spacing="60.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" minWidth="91.0" mnemonicParsing="false" onAction="#AddStudent" prefHeight="48.0" prefWidth="120.0" text="Añadir" HBox.hgrow="ALWAYS">
+            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" minWidth="117.0" mnemonicParsing="false" onAction="#AddStudent" prefHeight="48.0" prefWidth="140.0" text="Añadir" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="modButton" minWidth="91.0" mnemonicParsing="false" onAction="#modifyStudent" prefHeight="48.0" prefWidth="120.0" text="Modificar" HBox.hgrow="ALWAYS">
+            <Button fx:id="modButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" minWidth="117.0" mnemonicParsing="false" onAction="#modifyStudent" prefHeight="48.0" prefWidth="140.0" text="Modificar" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="delButton" minWidth="91.0" mnemonicParsing="false" onAction="#deleteStudent" prefHeight="48.0" prefWidth="120.0" text="Borrar" HBox.hgrow="ALWAYS">
+            <Button fx:id="delButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" minWidth="117.0" mnemonicParsing="false" onAction="#deleteStudent" prefHeight="48.0" prefWidth="140.0" text="Borrar" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="20.0" />
                </font>
