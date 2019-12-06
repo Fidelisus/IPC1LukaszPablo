@@ -23,6 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -40,14 +42,6 @@ import modelo.Tutoria;
  */
 public class Part1MainPartController implements Initializable {
 
-    @FXML
-    private Button initialbutton;
-    @FXML
-    private TextArea fechaSeleccionada;
-    @FXML
-    private ScrollPane tutoriasDelDiaScrollPane;
-    @FXML
-    private VBox tutoriasDelDiaBox;
 
     
     private ObservableList<Tutoria> datos = null;
@@ -56,20 +50,26 @@ public class Part1MainPartController implements Initializable {
     @FXML
     private BorderPane caledarioPane;
     @FXML
-    private Button asignaturasBoton;
-    @FXML
     private Button anadirTutoriaBoton;
+    @FXML
+    private TableView<?> tabelaTutorias;
+    @FXML
+    private TableColumn<?, ?> nombreColumn;
+    @FXML
+    private TableColumn<?, ?> duracionColumn;
+    @FXML
+    private TableColumn<?, ?> estadoColumn;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Calendar calendar = new Calendar(caledarioPane);
+        
         //calendarioBox.getChildren().addAll(split);
-        visualizarTutoriasDelDia();
+        //visualizarTutoriasDelDia();
     }
 
-    @FXML
     private void scenep5(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/vista/Part5AddOrDeleteStudent.fxml"));
         Scene scene = new Scene(root);
@@ -81,7 +81,7 @@ public class Part1MainPartController implements Initializable {
         
         
     }
-
+/*
     private void visualizarTutoriasDelDia() {
         datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
         datos.clear();
@@ -118,12 +118,12 @@ public class Part1MainPartController implements Initializable {
         //tutoria.setInicio(tt);
                 TextField tiempo = new TextField(tutoria.getInicio().toString());
                 TextField estado = new TextField("Estado: " + tutoria.getEstado());
-                /*
-                switch(tutoria.getEstado()){
-                    case Tutoria.EstadoTutoria.ANULADA:
-                        split.setStyle("-fx-background-color: cadetblue");
-                        break;
-                }*/
+                
+                //switch(tutoria.getEstado()){
+                //    case Tutoria.EstadoTutoria.ANULADA:
+                //        split.setStyle("-fx-background-color: cadetblue");
+                //        break;
+                //}
                 
                 split.getItems().addAll(datos, tiempo, estado);
                 tutoriasDelDiaBox.getChildren().addAll(split);
@@ -133,8 +133,7 @@ public class Part1MainPartController implements Initializable {
         tutoriasDelDiaScrollPane.setPannable(true);
         }
     }
-    
-    @FXML
+    */
     private void scenep6(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/parte6/Part6AddOrDeleteSubject.fxml"));
         Scene scene = new Scene(root);
