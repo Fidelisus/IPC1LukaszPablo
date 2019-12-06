@@ -88,6 +88,14 @@ public class Part1MainPartController implements Initializable {
     private Button noAsistida;
     @FXML
     private Button anadirComentario;
+    @FXML
+    private Text seleccionadaNombre;
+    @FXML
+    private Text seleccionadaComentarios;
+    @FXML
+    private Text seleccionadaDuracionYEstado;
+    @FXML
+    private Text SeleccionadaAlumno;
 
     /**
      * Initializes the controller class.
@@ -168,12 +176,48 @@ public class Part1MainPartController implements Initializable {
             return str;
         });
 
+        tabelaTutorias.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                noAsistida.setDisable(false);
+                anular.setDisable(false);
+                confirmar.setDisable(false);
+                anadirComentario.setDisable(false);
+                switch (newSelection.getEstado()) {
+                    case NO_ASISTIDA:
+                        noAsistida.setDisable(true);
+                        break;
+                    case ANULADA:
+                        anular.setDisable(true);
+                        break;
+                    case REALIZADA:
+                        confirmar.setDisable(true);
+                        break;
+                }
+            } else {
+                noAsistida.setDisable(true);
+                anular.setDisable(true);
+                confirmar.setDisable(true);
+                anadirComentario.setDisable(true);
+            }
+            
+            seleccionadaNombre.setText(newSelection.getAsignatura().getCodigo() + " " + newSelection.getAsignatura().getDescripcion());
+            seleccionadaDuracionYEstado.setText("Hora: " + newSelection.getInicio().toString() + " - " + newSelection.getInicio().plus(newSelection.getDuracion()).toString()
+                + " Estado: " + newSelection.getEstado());
+            seleccionadaComentarios.setText(newSelection.getAnotaciones());
+            
+            String alumnos = "";
+            for(Alumno alumno : newSelection.getAlumnos()){
+                alumnos = alumno.getNombre() + " " + alumno.getApellidos();
+            }
+            SeleccionadaAlumno.setText(alumnos);
+        });
+
         visualizarTutoriasDelDia();
     }
 
     private void visualizarTutoriasDelDia() {
         datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
-        
+
         tutoriasDia = FXCollections.observableArrayList();
 
         for (Tutoria tutoria : datos) {
@@ -215,11 +259,11 @@ public class Part1MainPartController implements Initializable {
             alert.setHeaderText("Estás anulando una tutoria...");
             alert.setContentText("¿Seguro que quieres continuar?");
             Optional<ButtonType> result = alert.showAndWait();
-            
+
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                for(Tutoria tutoria : datos){
-                    if(tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha() &&
-                            tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()){
+                for (Tutoria tutoria : datos) {
+                    if (tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha()
+                            && tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()) {
                         tutoria.setEstado(Tutoria.EstadoTutoria.ANULADA);
                     }
                 }
@@ -237,11 +281,11 @@ public class Part1MainPartController implements Initializable {
             alert.setHeaderText("Estás confirmando una tutoria...");
             alert.setContentText("¿Seguro que quieres continuar?");
             Optional<ButtonType> result = alert.showAndWait();
-            
+
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                for(Tutoria tutoria : datos){
-                    if(tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha() &&
-                            tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()){
+                for (Tutoria tutoria : datos) {
+                    if (tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha()
+                            && tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()) {
                         tutoria.setEstado(Tutoria.EstadoTutoria.REALIZADA);
                     }
                 }
@@ -253,17 +297,17 @@ public class Part1MainPartController implements Initializable {
 
     @FXML
     private void noAsistida(ActionEvent event) {
-                if (!datos.isEmpty() && tabelaTutorias.getSelectionModel().getSelectedItem() != null) {
+        if (!datos.isEmpty() && tabelaTutorias.getSelectionModel().getSelectedItem() != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("AVISO");
             alert.setHeaderText("Estás marcando una tutoria como no asistida...");
             alert.setContentText("¿Seguro que quieres continuar?");
             Optional<ButtonType> result = alert.showAndWait();
-            
+
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                for(Tutoria tutoria : datos){
-                    if(tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha() &&
-                            tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()){
+                for (Tutoria tutoria : datos) {
+                    if (tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha()
+                            && tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()) {
                         tutoria.setEstado(Tutoria.EstadoTutoria.NO_ASISTIDA);
                     }
                 }
