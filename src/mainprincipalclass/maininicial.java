@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import accesoBD.AccesoBD;
+
 
 public class maininicial extends Application {
     
@@ -23,6 +25,8 @@ public class maininicial extends Application {
         stage.setTitle("Welcome ");
         stage.setScene(scene);
         stage.show();
+        
+        stage.setOnCloseRequest(e->{AccesoBD.getInstance().salvar();});
     }
 
     /**
