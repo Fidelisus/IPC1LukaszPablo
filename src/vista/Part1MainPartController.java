@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
@@ -97,60 +98,6 @@ public class Part1MainPartController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
 
-        datos.clear();
-        Tutoria tu = new Tutoria();
-        tu.setAsignatura(new Asignatura());
-        tu.getAsignatura().setCodigo("COD");
-        tu.getAsignatura().setDescripcion("descripcion");
-        LocalTime t = LocalTime.of(8, 0);
-        tu.setInicio(t);
-        Duration dur = Duration.of(720, MINUTES);
-        tu.setDuracion(dur);
-        LocalDate d = LocalDate.of(2019, Month.DECEMBER, 3);
-        tu.setFecha(d);
-        tu.setEstado(Tutoria.EstadoTutoria.PEDIDA);
-        datos.add(tu);
-
-        Tutoria tu1 = new Tutoria();
-        tu1.setAsignatura(new Asignatura());
-        tu1.getAsignatura().setCodigo("AAA");
-        tu1.getAsignatura().setDescripcion("asig");
-        t = LocalTime.of(11, 30);
-        tu1.setInicio(t);
-        dur = Duration.of(40, MINUTES);
-        tu1.setDuracion(dur);
-        d = LocalDate.of(2019, Month.DECEMBER, 6);
-        tu1.setFecha(d);
-        tu1.setEstado(Tutoria.EstadoTutoria.PEDIDA);
-
-        Tutoria tu2 = new Tutoria();
-        tu2.setAsignatura(new Asignatura());
-        tu2.getAsignatura().setCodigo("BBB");
-        tu2.getAsignatura().setDescripcion("desc");
-        t = LocalTime.of(9, 30);
-        tu2.setInicio(t);
-        dur = Duration.of(60, MINUTES);
-        tu2.setDuracion(dur);
-        d = LocalDate.of(2019, Month.DECEMBER, 6);
-        tu2.setFecha(d);
-        tu2.setEstado(Tutoria.EstadoTutoria.PEDIDA);
-
-        Tutoria tu3 = new Tutoria();
-        tu3.setAsignatura(new Asignatura());
-        tu3.getAsignatura().setCodigo("VVC");
-        tu3.getAsignatura().setDescripcion("uuuuu");
-        t = LocalTime.of(13, 30);
-        tu3.setInicio(t);
-        dur = Duration.of(70, MINUTES);
-        tu3.setDuracion(dur);
-        d = LocalDate.of(2019, Month.DECEMBER, 6);
-        tu3.setFecha(d);
-        tu3.setEstado(Tutoria.EstadoTutoria.PEDIDA);
-
-        datos.add(tu1);
-        datos.add(tu2);
-        datos.add(tu3);
-
         createCalendar();
         datePickerUpdate();
         setBotones();
@@ -158,7 +105,7 @@ public class Part1MainPartController implements Initializable {
         visualizarTutoriasDelDia();
     }
 
-    private void setBotones() {
+private void setBotones() {
         seleccionadaNombre.setText(" ");
         seleccionadaDuracion.setText(" ");
         seleccionadaEstado.setText(" ");
@@ -195,7 +142,7 @@ public class Part1MainPartController implements Initializable {
 
                 String alumnos = "";
                 for (Alumno alumno : newSelection.getAlumnos()) {
-                    alumnos += alumno.getNombre() + " " + alumno.getApellidos();
+                    alumnos += alumno.getNombre() + " " + alumno.getApellidos() + " " + alumno.getEmail();
                 }
                 SeleccionadaAlumno.setText(alumnos);
             } else {
@@ -302,6 +249,10 @@ public class Part1MainPartController implements Initializable {
             }
         }
         AccesoBD.getInstance().salvar();
+        LocalDate t = datePicker.getValue();
+        createCalendar();
+        datePicker.setValue(t);
+        datePickerUpdate();
         visualizarTutoriasDelDia();
     }
 
@@ -423,7 +374,7 @@ public class Part1MainPartController implements Initializable {
     private boolean esDiaLibre(LocalDateTime day) {
         LocalTime t = LocalTime.of(0, 0);
         for (Tutoria tutoria : datos) {
-            if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(day.toLocalDate()) == 0) {
+            if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(day.toLocalDate()) == 0 && tutoria.getEstado() != Tutoria.EstadoTutoria.ANULADA) {
                 t = t.plus(tutoria.getDuracion());
             }
         }

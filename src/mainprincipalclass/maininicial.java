@@ -7,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import accesoBD.AccesoBD;
-import com.sun.javafx.css.StyleManager;
-
 
 public class maininicial extends Application {
     

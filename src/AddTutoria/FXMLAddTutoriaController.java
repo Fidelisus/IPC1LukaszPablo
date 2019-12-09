@@ -16,7 +16,6 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -271,7 +270,8 @@ public class FXMLAddTutoriaController implements Initializable {
     private void alumnoSeleccionado(MouseEvent event) {
         if (!"".equals(alumnosTabla.getSelectionModel().getSelectedItem()) && alumnosTabla.getSelectionModel().getSelectedItem() != null) {
             textSelecAlumno.setText("");
-            textoAlumnos.setText(alumnosTabla.getSelectionModel().getSelectedItem().getNombre() + " " + alumnosTabla.getSelectionModel().getSelectedItem().getApellidos());
+            textoAlumnos.setText(alumnosTabla.getSelectionModel().getSelectedItem().getNombre() + " "
+                    + alumnosTabla.getSelectionModel().getSelectedItem().getApellidos() + " " + alumnosTabla.getSelectionModel().getSelectedItem().getEmail());
             textoAsignatura.setText("");
             textSelecAsignatura.setText("Selecciona una asignatura");
             añadirAsignatura.setDisable(false);
@@ -402,14 +402,18 @@ public class FXMLAddTutoriaController implements Initializable {
 
         LocalTime inicioNuevo = LocalTime.of(horaseleccionar.getValue(), minutosseleccionar.getValue());
         LocalTime finNuevo = inicioNuevo.plus(Duration.of((long) slider.getValue(), MINUTES));
+        if(finNuevo.isAfter(LocalTime.of(20, 0))){
+            tiempoOcupado();
+            return;
+        }
         System.out.println(inicioNuevo + " " + finNuevo);
         for (Tutoria tutoria : datosTutorias) {
-            if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(fecha) == 0) {
+            if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(fecha) == 0
+                    && tutoria.getEstado() != Tutoria.EstadoTutoria.ANULADA) {
                 LocalTime inicio = tutoria.getInicio();
                 LocalTime fin = inicio.plus(tutoria.getDuracion());
-
-                if ((inicio.isAfter(inicioNuevo) || fin.isAfter(inicioNuevo))
-                        && (inicio.isBefore(finNuevo) || fin.isBefore(finNuevo))) {
+                if (((inicio.isAfter(inicioNuevo) || fin.isAfter(inicioNuevo))
+                        && (inicio.isBefore(finNuevo) || fin.isBefore(finNuevo)))) {
                     tiempoOcupado();
                     return;
                 }
