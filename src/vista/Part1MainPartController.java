@@ -5,6 +5,7 @@
  */
 package vista;
 
+import AddTutoria.FXMLAddTutoriaController;
 import accesoBD.AccesoBD;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.IOException;
@@ -439,13 +440,18 @@ public class Part1MainPartController implements Initializable {
 
     @FXML
     private void anadirTutoria(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
+        FXMLLoader miLoader = new FXMLLoader(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
+        Parent root = miLoader.load();
         Scene scene = new Scene(root);
         Stage ventana2 = new Stage();
         ventana2.setTitle("Anadir Asignatura");
         ventana2.setScene(scene);
         ventana2.initModality(Modality.APPLICATION_MODAL);
+        ((FXMLAddTutoriaController) miLoader.getController()).setFechaSeleccionada(datePicker.getValue());
         ventana2.showAndWait();
+        visualizarTutoriasDelDia();
+        tabelaTutorias.refresh();
     }
 }
 /*
