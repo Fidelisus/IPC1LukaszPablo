@@ -441,7 +441,7 @@ public class Part1MainPartController implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("/vista/Part5AddOrDeleteStudent.fxml"));
         Scene scene = new Scene(root);
         Stage ventana2 = new Stage();
-        ventana2.setTitle("Add/Modify/Delete Student");
+        ventana2.setTitle("Gestionar Alumno");
         ventana2.setScene(scene);
         ventana2.initModality(Modality.APPLICATION_MODAL);
         ventana2.showAndWait();
@@ -520,4 +520,26 @@ public class Part1MainPartController implements Initializable {
         tutoriasDelDiaScrollPane.setPannable(true);
         }
     }
- */
+    
+}
+    }
+        ventana2.showAndWait();
+        ventana2.initModality(Modality.APPLICATION_MODAL);
+        ventana2.setScene(scene);
+        ventana2.setTitle("Añadir Tutoría");
+        Stage ventana2 = new Stage();
+        Scene scene = new Scene(root);
+        Parent root = FXMLLoader.load(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
+    private void anadirTutoria(ActionEvent event) throws IOException {
+    
+        @FXML
+    }
+        ventana2.showAndWait();
+        ventana2.initModality(Modality.APPLICATION_MODAL);
+        ventana2.setScene(scene);
+        ventana2.setTitle("Gestionar asignaturas");
+        Stage ventana2 = new Stage();
+        Scene scene = new Scene(root);
+        Parent root = FXMLLoader.load(getClass().getResource("/AddAsignatura/Part6AddOrDeleteSubject.fxml"));
+    private void scenep6(ActionEvent event) throws IOException {
+    @FXML

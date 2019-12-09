@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package parte6;
+package AddAsignatura;
 
 import accesoBD.AccesoBD;
 import java.io.IOException;
@@ -87,7 +87,7 @@ public class Part6AddOrDeleteSubjectController implements Initializable {
         initializeModel();
         subjectsTable.setItems(datosSubject);
         verificadorSub.textFillProperty().set(BLACK);
-
+        
         modButton.disableProperty().bind(Bindings.not(subjectsTable.focusedProperty()));
         delButton.disableProperty().bind(Bindings.not(subjectsTable.focusedProperty()));
         modButton.disableProperty().bind(Bindings.size(datosSubject).isEqualTo(2));
@@ -100,7 +100,7 @@ public class Part6AddOrDeleteSubjectController implements Initializable {
 
     @FXML
     private void AddSubject(ActionEvent event) throws IOException {
-        FXMLLoader miLoader = new FXMLLoader(getClass().getResource("/parte6/Part6ComplementaryWindow.fxml"));
+        FXMLLoader miLoader = new FXMLLoader(getClass().getResource("/AddAsignatura/Part6ComplementaryWindow.fxml"));
         Parent root = miLoader.load();
 
         Scene scene = new Scene(root);
@@ -126,7 +126,7 @@ public class Part6AddOrDeleteSubjectController implements Initializable {
     private void modifySubject(ActionEvent event) throws IOException {
 
         if (subjectsTable.getSelectionModel().getSelectedItem() != null && index() == false) {
-            FXMLLoader miLoader = new FXMLLoader(getClass().getResource("/parte6/Part6ComplementaryWindow.fxml"));
+            FXMLLoader miLoader = new FXMLLoader(getClass().getResource("/AddAsignatura/Part6ComplementaryWindow.fxml"));
             Parent root = miLoader.load();
 
             Scene scene = new Scene(root);
