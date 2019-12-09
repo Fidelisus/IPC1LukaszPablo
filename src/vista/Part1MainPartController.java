@@ -459,7 +459,7 @@ public class Part1MainPartController implements Initializable {
 
     @FXML
     private void anadirTutoria(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/vista/Part2SeleccionarTutoria.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
         Scene scene = new Scene(root);
         Stage ventana2 = new Stage();
         ventana2.setTitle("Anadir Asignatura");
@@ -543,3 +543,4 @@ public class Part1MainPartController implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("/AddAsignatura/Part6AddOrDeleteSubject.fxml"));
     private void scenep6(ActionEvent event) throws IOException {
     @FXML
+*/

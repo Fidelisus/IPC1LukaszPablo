@@ -69,7 +69,7 @@
       </BorderPane>
       <BorderPane prefHeight="200.0" prefWidth="350.0">
          <center>
-            <TableView fx:id="asignaturasTabla" onMouseClicked="#asignaturaSeleccionada" prefHeight="559.0" prefWidth="294.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="asignaturasTabla" disable="true" onMouseClicked="#asignaturaSeleccionada" prefHeight="559.0" prefWidth="294.0" BorderPane.alignment="CENTER">
                <columns>
                   <TableColumn fx:id="codigoColumna" prefWidth="142.0" sortable="false" text="Código" />
                   <TableColumn fx:id="descripcionColumna" prefWidth="151.0" sortable="false" text="Descripción" />
@@ -85,7 +85,7 @@
          <top>
             <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#añadirAsignaturaAccion" text="Añadir" textAlignment="CENTER">
+                  <Button fx:id="añadirAsignatura" disable="true" mnemonicParsing="false" onAction="#añadirAsignaturaAccion" text="Añadir" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -93,7 +93,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="modificarAsignatura" mnemonicParsing="false" onAction="#modificarAsignaturaAccion" text="Modificar" textAlignment="CENTER">
+                  <Button fx:id="modificarAsignatura" disable="true" mnemonicParsing="false" onAction="#modificarAsignaturaAccion" text="Modificar" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -101,7 +101,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="borrarAsignatura" mnemonicParsing="false" onAction="#borrarAsignaturaAccion" text="Borrar" textAlignment="CENTER">
+                  <Button fx:id="borrarAsignatura" disable="true" mnemonicParsing="false" onAction="#borrarAsignaturaAccion" text="Borrar" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -121,11 +121,21 @@
             <StackPane prefHeight="250.0" prefWidth="300.0">
                <children>
                   <TextField fx:id="textoAlumnos" editable="false" prefHeight="50.0" prefWidth="300.0" />
+                  <Text fx:id="textSelecAlumno" fill="#ddcbcb" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccione un alumno..." wrappingWidth="274.6708984375">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
                </children>
             </StackPane>
             <StackPane prefHeight="60.0" prefWidth="300.0">
                <children>
-                  <TextField fx:id="textoAsignatura" editable="false" prefHeight="50.0" prefWidth="300.0" />
+                  <TextField fx:id="textoAsignatura" disable="true" editable="false" prefHeight="50.0" prefWidth="300.0" />
+                  <Text fx:id="textSelecAsignatura" fill="#ddcbcb" strokeType="OUTSIDE" strokeWidth="0.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
                </children>
             </StackPane>
             <Separator minHeight="25.0" />
@@ -143,12 +153,12 @@
             </HBox>
             <HBox prefHeight="47.0" prefWidth="300.0">
                <children>
-                  <Spinner fx:id="horaseleccionar">
+                  <Spinner fx:id="horaseleccionar" disable="true">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Spinner>
-                  <Spinner fx:id="minutosseleccionar" />
+                  <Spinner fx:id="minutosseleccionar" disable="true" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="36.0" prefWidth="300.0">
@@ -179,10 +189,10 @@
                   </Text>
                </children>
             </HBox>
-            <Slider fx:id="slider" majorTickUnit="10.0" max="90.0" minorTickCount="0" prefHeight="75.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+            <Slider fx:id="slider" disable="true" majorTickUnit="10.0" max="90.0" min="10.0" minorTickCount="0" prefHeight="75.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
             <HBox alignment="BOTTOM_CENTER" prefHeight="117.0" prefWidth="300.0">
                <children>
-                  <Button mnemonicParsing="false" text="Aceptar">
+                  <Button fx:id="aceptartutoria" mnemonicParsing="false" onAction="#ComprobarSiSePuedeLaTutoria" text="Aceptar">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -190,7 +200,7 @@
                         <Insets right="15.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" text="Cancelar">
+                  <Button mnemonicParsing="false" onAction="#salirSinGuardarTutoria" text="Cancelar">
                      <font>
                         <Font size="25.0" />
                      </font>

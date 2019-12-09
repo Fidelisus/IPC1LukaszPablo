@@ -9,7 +9,6 @@ import AddAsignatura.Part6ComplementaryWindowController;
 import accesoBD.AccesoBD;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
@@ -25,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -73,13 +73,22 @@ public class FXMLAddTutoriaController implements Initializable {
     @FXML
     private TableColumn<Asignatura, String> descripcionColumna;
     @FXML
-    private Spinner<LocalTime> horaseleccionar;
+    private Spinner<Integer> horaseleccionar;
     @FXML
-    private Spinner<LocalTime> minutosseleccionar;
+    private Spinner<Integer> minutosseleccionar;
     @FXML
     private Text tiemposlider;
     @FXML
     private Slider slider;
+
+    @FXML
+    private Button añadirAsignatura;
+    @FXML
+    private Button aceptartutoria;
+    @FXML
+    private Text textSelecAlumno;
+    @FXML
+    private Text textSelecAsignatura;
 
     /**
      * Initializes the controller class.
@@ -95,16 +104,20 @@ public class FXMLAddTutoriaController implements Initializable {
         initializeModel();
         alumnosTabla.setItems(datosAlumnos);
         asignaturasTabla.setItems(datosAsignatura);
+        SpinnerValueFactory<Integer> vlh = new SpinnerValueFactory.IntegerSpinnerValueFactory(8, 20, 8, 1);
+        horaseleccionar.setValueFactory(vlh);
+        SpinnerValueFactory<Integer> vlminutes = new SpinnerValueFactory.IntegerSpinnerValueFactory(00, 180, 00, 10);
+        minutosseleccionar.setValueFactory(vlminutes);
 
         //LISTENERS
+        //Parte 1
         textoAlumnos.disableProperty().bind(Bindings.size(datosAlumnos).isEqualTo(0));
-        textoAsignatura.disableProperty().bind(textoAlumnos.disableProperty());
-        horaseleccionar.disableProperty().bind(textoAsignatura.disableProperty());
-        minutosseleccionar.disableProperty().bind(horaseleccionar.disableProperty());
-        slider.disableProperty().bind(minutosseleccionar.disableProperty());
-       
-       tiemposlider.textProperty().bind(slider.valueProperty().asString("%.1f"));
+        modificarAlumnos.disableProperty().bind(Bindings.size(datosAlumnos).isEqualTo(0));
+        borrarAlumnos.disableProperty().bind(Bindings.size(datosAlumnos).isEqualTo(0));
+        //Disables or Enables of all the Asignatura stuff are not implemented with binds
+        aceptartutoria.disableProperty().bind(slider.disableProperty());
 
+        tiemposlider.textProperty().bind(slider.valueProperty().asString("%.0f"));
 
         nombreColumna.setCellValueFactory(fila -> fila.getValue().nombreProperty());
         apellidosColumna.setCellValueFactory(fila -> fila.getValue().apellidosProperty());
@@ -132,6 +145,17 @@ public class FXMLAddTutoriaController implements Initializable {
             datosAlumnos.add(student);
         }
         textoAlumnos.setText("");
+        textoAsignatura.setText("");
+        textSelecAlumno.setText("Seleccione un alumno...");
+        textSelecAsignatura.setText("");
+        textoAsignatura.setDisable(true);
+        añadirAsignatura.setDisable(true);
+        modificarAsignatura.setDisable(true);
+        borrarAsignatura.setDisable(true);
+        asignaturasTabla.setDisable(true);
+        horaseleccionar.setDisable(true);
+        minutosseleccionar.setDisable(true);
+        slider.setDisable(true);
         AccesoBD.getInstance().salvar();
 
     }
@@ -154,6 +178,17 @@ public class FXMLAddTutoriaController implements Initializable {
             ventana3.showAndWait();
         }
         textoAlumnos.setText("");
+        textoAsignatura.setText("");
+        textSelecAlumno.setText("Seleccione un alumno...");
+        textSelecAsignatura.setText("");
+        textoAsignatura.setDisable(true);
+        añadirAsignatura.setDisable(true);
+        modificarAsignatura.setDisable(true);
+        borrarAsignatura.setDisable(true);
+        asignaturasTabla.setDisable(true);
+        horaseleccionar.setDisable(true);
+        minutosseleccionar.setDisable(true);
+        slider.setDisable(true);
         AccesoBD.getInstance().salvar();
     }
 
@@ -170,15 +205,50 @@ public class FXMLAddTutoriaController implements Initializable {
             }
         }
         textoAlumnos.setText("");
+        textoAsignatura.setText("");
+        textSelecAlumno.setText("Seleccione un alumno...");
+        textSelecAsignatura.setText("");
+        textoAsignatura.setDisable(true);
+        añadirAsignatura.setDisable(true);
+        modificarAsignatura.setDisable(true);
+        borrarAsignatura.setDisable(true);
+        asignaturasTabla.setDisable(true);
+        horaseleccionar.setDisable(true);
+        minutosseleccionar.setDisable(true);
+        slider.setDisable(true);
         AccesoBD.getInstance().salvar();
+
     }
 
     @FXML
     private void alumnoSeleccionado(MouseEvent event) {
         if (!"".equals(alumnosTabla.getSelectionModel().getSelectedItem())) {
-            textoAlumnos.setText(alumnosTabla.getSelectionModel().getSelectedItem().getNombre());
+            textSelecAlumno.setText("");
+            textoAlumnos.setText(alumnosTabla.getSelectionModel().getSelectedItem().getNombre() + " " + alumnosTabla.getSelectionModel().getSelectedItem().getApellidos());
+            textoAsignatura.setText("");
+            textSelecAsignatura.setText("Selecciona una asignatura...");
+            textoAsignatura.setDisable(false);
+            añadirAsignatura.setDisable(false);
+            modificarAsignatura.setDisable(false);
+            borrarAsignatura.setDisable(false);
+            asignaturasTabla.setDisable(false);           
+            horaseleccionar.setDisable(true);
+            minutosseleccionar.setDisable(true);
+            slider.setDisable(true);
         } else {
             textoAlumnos.setText("");
+            textSelecAlumno.setText("Seleccione un alumno...");
+            textoAsignatura.setText("");
+            textSelecAsignatura.setText("");
+            textoAsignatura.setDisable(true);
+            añadirAsignatura.setDisable(true);
+            modificarAsignatura.setDisable(true);
+            borrarAsignatura.setDisable(true);
+            asignaturasTabla.setDisable(true);
+            horaseleccionar.setDisable(true);
+            minutosseleccionar.setDisable(true);
+            slider.setDisable(true);
+
         }
 
     }
@@ -202,6 +272,10 @@ public class FXMLAddTutoriaController implements Initializable {
 
         }
         textoAsignatura.setText("");
+        textSelecAsignatura.setText("Selecciona una asignatura...");
+        horaseleccionar.setDisable(true);
+        minutosseleccionar.setDisable(true);
+        slider.setDisable(true);
         AccesoBD.getInstance().salvar();
     }
 
@@ -233,6 +307,10 @@ public class FXMLAddTutoriaController implements Initializable {
             ((Part6ComplementaryWindowController) miLoader.getController()).modifySubject(asignaturasTabla.getSelectionModel().getSelectedItem());
             ventana3.showAndWait();
             textoAsignatura.setText("");
+            textSelecAsignatura.setText("Selecciona una asignatura...");
+            horaseleccionar.setDisable(true);
+            minutosseleccionar.setDisable(true);
+            slider.setDisable(true);
             AccesoBD.getInstance().salvar();
         }
     }
@@ -249,6 +327,10 @@ public class FXMLAddTutoriaController implements Initializable {
                 datosAsignatura.remove(asignaturasTabla.getSelectionModel().getSelectedItem());
             }
             textoAsignatura.setText("");
+            textSelecAsignatura.setText("Selecciona una asignatura...");
+            horaseleccionar.setDisable(true);
+            minutosseleccionar.setDisable(true);
+            slider.setDisable(true);
             AccesoBD.getInstance().salvar();
 
         }
@@ -257,10 +339,30 @@ public class FXMLAddTutoriaController implements Initializable {
     @FXML
     private void asignaturaSeleccionada(MouseEvent event) {
         if (!"".equals(asignaturasTabla.getSelectionModel().getSelectedItem())) {
+            textSelecAsignatura.setText("");
             textoAsignatura.setText(asignaturasTabla.getSelectionModel().getSelectedItem().getCodigo());
+            horaseleccionar.setDisable(false);
+            minutosseleccionar.setDisable(false);
+            slider.setDisable(false);
         } else {
             textoAsignatura.setText("");
+            textSelecAsignatura.setText("Selecciona una asignatura...");
+            horaseleccionar.setDisable(true);
+            minutosseleccionar.setDisable(true);
+            slider.setDisable(true);
         }
+    }
+
+    @FXML
+    private void ComprobarSiSePuedeLaTutoria(ActionEvent event) {
+        //this is the EventHandler for checking if that day with that time is possible a Tutory  
+        //mind that maybe its possible make the tutory at that hour but not with that duration, I think that should throw a Window saying that ("too long duration or some shit like this")
+        //if its not possible make that tutory, throw a Window saying "its not possible my nigga"
+    }
+
+    @FXML
+    private void salirSinGuardarTutoria(ActionEvent event) {
+        ((Stage) textoAlumnos.getScene().getWindow()).close();
     }
 
 }
