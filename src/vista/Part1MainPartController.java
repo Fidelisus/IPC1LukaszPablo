@@ -17,33 +17,24 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import static java.time.temporal.ChronoUnit.MINUTES;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -54,13 +45,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextInputDialog;
-import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
-import modelo.Tutorias;
 
 /**
  * FXML Controller class
@@ -70,8 +57,6 @@ import modelo.Tutorias;
 public class Part1MainPartController implements Initializable {
 
     private ObservableList<Tutoria> datos = null;
-    @FXML
-    private VBox calendarioBox;
     @FXML
     private BorderPane caledarioPane;
     @FXML
@@ -108,9 +93,6 @@ public class Part1MainPartController implements Initializable {
     @FXML
     private Text seleccionadaEstado;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
@@ -291,9 +273,7 @@ public class Part1MainPartController implements Initializable {
         tutoriasDia = FXCollections.observableArrayList();
 
         for (Tutoria tutoria : datos) {
-            //System.out.println(tutoria.getEstado());
             if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(datePicker.getValue()) == 0) {
-                //tutoria.setEstado(Tutoria.EstadoTutoria.PEDIDA);
                 tutoriasDia.add(tutoria);
             }
         }
@@ -392,15 +372,12 @@ public class Part1MainPartController implements Initializable {
 
     private void createCalendar() {
         try {
-//            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             datePicker = new DatePicker(LocalDate.now());
             datePicker.setShowWeekNumbers(false);
             datePicker.setDayCellFactory(cel -> new DiaCelda());
 
-            //datePicker.setStyle("-fx-font: 45px \"Arial\";");
             DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
             Node popupContent = datePickerSkin.getPopupContent();
-            //popupContent.set  .setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             caledarioPane.setCenter(popupContent);
             datePicker.valueProperty().addListener((a, b, c) -> visualizarTutoriasDelDia());
         } catch (Exception e) {
@@ -426,8 +403,7 @@ public class Part1MainPartController implements Initializable {
 
         @Override
         public void updateItem(LocalDate item, boolean empty) {
-            super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
-            //setStyle("-fx-font: 20px \"Arial\";");
+            super.updateItem(item, empty);
             DayOfWeek day = DayOfWeek.from(item);
             if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
                 this.setTextFill(Color.ROSYBROWN);
@@ -469,79 +445,3 @@ public class Part1MainPartController implements Initializable {
         tabelaTutorias.refresh();
     }
 }
-/*
-    private void visualizarTutoriasDelDia() {
-        datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
-        datos.clear();
-        Tutoria tu = new Tutoria();
-        tu.setAsignatura(new Asignatura());
-        tu.getAsignatura().setCodigo("COD");
-        tu.getAsignatura().setDescripcion("descripcion");
-        LocalTime t = LocalTime.now(); 
-        tu.setInicio(t);
-        tu.setEstado(Tutoria.EstadoTutoria.PEDIDA);
-        datos.add(tu);
-        
-        Tutoria tu1 = new Tutoria();
-        tu1.setAsignatura(new Asignatura());
-        tu1.getAsignatura().setCodigo("AAA");
-        tu1.getAsignatura().setDescripcion("asig");
-        t = LocalTime.of(11, 30); 
-        tu1.setInicio(t);
-        tu1.setEstado(Tutoria.EstadoTutoria.ANULADA);
-        datos.add(tu1);
-        
-        AccesoBD.getInstance().salvar();
-        
-        if(!datos.isEmpty()){
-            tutoriasDelDiaBox.setSpacing(10);
-            SplitPane split;
-            
-            for(Tutoria tutoria : datos){
-                split = new SplitPane();
-                split.setOrientation(Orientation.VERTICAL);
-                split.setStyle("-fx-background-color: cadetblue");
-                TextField datos = new TextField (tutoria.getAsignatura().getCodigo() + " " + tutoria.getAsignatura().getDescripcion());
-            //LocalTime tt = LocalTime.now(); 
-        //tutoria.setInicio(tt);
-                TextField tiempo = new TextField(tutoria.getInicio().toString());
-                TextField estado = new TextField("Estado: " + tutoria.getEstado());
-                
-                //switch(tutoria.getEstado()){
-                //    case Tutoria.EstadoTutoria.ANULADA:
-                //        split.setStyle("-fx-background-color: cadetblue");
-                //        break;
-                //}
-                
-                split.getItems().addAll(datos, tiempo, estado);
-                tutoriasDelDiaBox.getChildren().addAll(split);
-        }
-        
-        tutoriasDelDiaScrollPane.setContent(tutoriasDelDiaBox);
-        tutoriasDelDiaScrollPane.setPannable(true);
-        }
-    }
-    
-}
-    }
-        ventana2.showAndWait();
-        ventana2.initModality(Modality.APPLICATION_MODAL);
-        ventana2.setScene(scene);
-        ventana2.setTitle("Añadir Tutoría");
-        Stage ventana2 = new Stage();
-        Scene scene = new Scene(root);
-        Parent root = FXMLLoader.load(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
-    private void anadirTutoria(ActionEvent event) throws IOException {
-    
-        @FXML
-    }
-        ventana2.showAndWait();
-        ventana2.initModality(Modality.APPLICATION_MODAL);
-        ventana2.setScene(scene);
-        ventana2.setTitle("Gestionar asignaturas");
-        Stage ventana2 = new Stage();
-        Scene scene = new Scene(root);
-        Parent root = FXMLLoader.load(getClass().getResource("/AddAsignatura/Part6AddOrDeleteSubject.fxml"));
-    private void scenep6(ActionEvent event) throws IOException {
-    @FXML
-*/

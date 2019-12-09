@@ -34,12 +34,9 @@ public class Part5ComplementaryWindowController implements Initializable {
     private Text advisor;
 
     private boolean state;
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }
 
     @FXML
