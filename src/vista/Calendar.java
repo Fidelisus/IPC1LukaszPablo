@@ -33,13 +33,19 @@ import javafx.stage.Stage;
             DatePicker datePicker = new DatePicker(LocalDate.now());
             datePicker.setShowWeekNumbers(false);
             datePicker.setDayCellFactory(cel-> new DiaCelda());
-
+            /*
+            datePicker.setStyle("-fx-font: 45px \"Arial\";");
+            
+            //datePicker.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            datePicker.setPrefHeight(10);
+            datePicker.setMaxHeight(10);
+            datePicker.setMinHeight(10);
+            */
             DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
             Node popupContent = datePickerSkin.getPopupContent();
-
+            //popupContent.set  .setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             root.setCenter(popupContent);
        //     datePicker.valueProperty().addListener(listener);
-
        
        
         } catch (Exception e) {
@@ -53,7 +59,7 @@ import javafx.stage.Stage;
             @Override
             public void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
- 
+                setStyle("-fx-font: 20px \"Arial\";");
                 // Show Weekends in blue color
                 DayOfWeek day = DayOfWeek.from(item);
                 if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
