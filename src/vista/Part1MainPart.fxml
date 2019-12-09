@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane prefHeight="567.0" prefWidth="1157.0" vgap="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part1MainPartController">
+<GridPane prefHeight="567.0" prefWidth="1157.0" stylesheets="@../mainprincipalclass/mainCSS.css" vgap="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part1MainPartController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="771.9999694824219" minWidth="10.0" prefWidth="630.26669921875" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="771.9999694824219" minWidth="0.0" prefWidth="35.0" />
@@ -34,35 +34,35 @@
                   </Text>
                </center>
             </BorderPane>
-            <HBox prefHeight="28.0" prefWidth="513.0" spacing="42.0">
+            <HBox alignment="CENTER" spacing="40.0">
                <children>
-                  <Button fx:id="anadirTutoriaBoton" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirTutoria" prefHeight="59.0" prefWidth="98.0" text="Anadir">
+                  <Button fx:id="anadirTutoriaBoton" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirTutoria" text="Anadir">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="anular" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#anular" prefHeight="45.0" prefWidth="91.0" text="Anular">
+                  <Button fx:id="anular" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#anular" text="Anular">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="confirmar" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#confirmar" prefHeight="45.0" text="Realisada">
+                  <Button fx:id="confirmar" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#confirmar" text="Realisada">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="noAsistida" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#noAsistida" prefHeight="45.0" prefWidth="101.0" text="No asistida">
+                  <Button fx:id="noAsistida" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#noAsistida" text="No asistida">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="18.0" />
                      </font>
                   </Button>
                </children>
             </HBox>
-            <BorderPane prefHeight="26.0" prefWidth="513.0">
+            <BorderPane>
                <center>
-                  <Button fx:id="anadirComentario" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirComentario" prefHeight="22.0" text="Anadir comentario" BorderPane.alignment="CENTER">
+                  <Button fx:id="anadirComentario" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirComentario" text="Anadir comentario" BorderPane.alignment="CENTER">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="18.0" />
                      </font>
                   </Button>
                </center>

@@ -15,15 +15,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddTutoria.FXMLAddTutoriaController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1050.0" stylesheets="@../mainprincipalclass/mainCSS.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddTutoria.FXMLAddTutoriaController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="350.0">
          <center>
             <TableView fx:id="alumnosTabla" onMouseClicked="#alumnoSeleccionado" prefHeight="559.0" prefWidth="294.0" BorderPane.alignment="CENTER">
                <columns>
-                  <TableColumn fx:id="nombreColumna" minWidth="-Infinity" prefWidth="75.0" text="Alumno" />
-                  <TableColumn fx:id="apellidosColumna" minWidth="-Infinity" prefWidth="79.0" text="Apellidos" />
-                  <TableColumn fx:id="emailColumna" minWidth="-Infinity" prefWidth="139.0" text="E-mail del alumno" />
+                  <TableColumn fx:id="nombreColumna" minWidth="20.0" prefWidth="75.0" sortable="false" text="Alumno" />
+                  <TableColumn fx:id="apellidosColumna" minWidth="20.0" prefWidth="79.0" text="Apellidos" />
+                  <TableColumn fx:id="emailColumna" minWidth="40.0" prefWidth="139.0" text="E-mail" />
                </columns>
                <BorderPane.margin>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -39,7 +39,7 @@
          <top>
             <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onAction="#alumnosAñadirAccion" text="Añadir" textAlignment="CENTER">
+                  <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#alumnosAñadirAccion" text="Añadir" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -47,7 +47,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="modificarAlumnos" mnemonicParsing="false" onAction="#modificarAlumnosAccion" text="Modificar" textAlignment="CENTER">
+                  <Button fx:id="modificarAlumnos" minWidth="-Infinity" mnemonicParsing="false" onAction="#modificarAlumnosAccion" text="Modificar" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -55,7 +55,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="borrarAlumnos" mnemonicParsing="false" onAction="#borrarAlumnosAccion" text="Borrar" textAlignment="CENTER">
+                  <Button fx:id="borrarAlumnos" minWidth="-Infinity" mnemonicParsing="false" onAction="#borrarAlumnosAccion" text="Borrar" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -69,13 +69,13 @@
       </BorderPane>
       <BorderPane prefHeight="200.0" prefWidth="350.0">
          <center>
-            <TableView fx:id="asignaturasTabla" disable="true" onMouseClicked="#asignaturaSeleccionada" prefHeight="559.0" prefWidth="294.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="asignaturasTabla" disable="true" onMouseClicked="#asignaturaSeleccionada" prefHeight="551.0" prefWidth="309.0" BorderPane.alignment="CENTER">
                <columns>
                   <TableColumn fx:id="codigoColumna" prefWidth="142.0" sortable="false" text="Código" />
                   <TableColumn fx:id="descripcionColumna" prefWidth="151.0" sortable="false" text="Descripción" />
                </columns>
                <BorderPane.margin>
-                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                  <Insets bottom="25.0" left="25.0" right="22.0" top="25.0" />
                </BorderPane.margin>
             </TableView>
          </center>
@@ -85,7 +85,7 @@
          <top>
             <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="añadirAsignatura" disable="true" mnemonicParsing="false" onAction="#añadirAsignaturaAccion" text="Añadir" textAlignment="CENTER">
+                  <Button fx:id="añadirAsignatura" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#añadirAsignaturaAccion" text="Añadir" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -93,7 +93,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="modificarAsignatura" disable="true" mnemonicParsing="false" onAction="#modificarAsignaturaAccion" text="Modificar" textAlignment="CENTER">
+                  <Button fx:id="modificarAsignatura" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#modificarAsignaturaAccion" text="Modificar" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -101,7 +101,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="borrarAsignatura" disable="true" mnemonicParsing="false" onAction="#borrarAsignaturaAccion" text="Borrar" textAlignment="CENTER">
+                  <Button fx:id="borrarAsignatura" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#borrarAsignaturaAccion" text="Borrar" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="12.5" right="12.5" />
                      </HBox.margin>
@@ -118,7 +118,7 @@
             <Insets left="25.0" right="25.0" />
          </HBox.margin>
          <children>
-            <VBox prefHeight="238.0" prefWidth="300.0" spacing="30.0">
+            <VBox prefHeight="162.0" prefWidth="300.0" spacing="30.0">
                <children>
                   <StackPane prefWidth="300.0">
                      <children>
@@ -164,10 +164,9 @@
                   </StackPane>
                </children>
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets top="120.0" />
                </VBox.margin>
             </VBox>
-            <Separator minHeight="25.0" />
             <StackPane prefHeight="39.0" prefWidth="300.0">
                <children>
                   <Text fx:id="fechaSeleccionada" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">

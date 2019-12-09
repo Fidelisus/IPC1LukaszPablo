@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import accesoBD.AccesoBD;
+import com.sun.javafx.css.StyleManager;
 
 
 public class maininicial extends Application {
@@ -22,11 +23,14 @@ public class maininicial extends Application {
         root = FXMLLoader.load(getClass().getResource("/vista/Part1MainPart.fxml"));
         
         Scene scene = new Scene(root);
-        stage.setTitle("Bienvenido ");
+        stage.setTitle("Manejador de tutorias");
         stage.setScene(scene);
         stage.show();
         
         stage.setOnCloseRequest(e->{AccesoBD.getInstance().salvar();});
+        
+        //Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+        //Application.setUserAgentStylesheet(getClass().getResource("mainCSS.css").toExternalForm());	
     }
 
     /**
