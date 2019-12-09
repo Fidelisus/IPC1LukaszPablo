@@ -56,6 +56,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.TextInputDialog;
 import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -115,7 +116,7 @@ public class Part1MainPartController implements Initializable {
         datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
 
         datos.clear();
-        Tutoria tu = new Tutoria(); 
+        Tutoria tu = new Tutoria();
         tu.setAsignatura(new Asignatura());
         tu.getAsignatura().setCodigo("COD");
         tu.getAsignatura().setDescripcion("descripcion");
@@ -181,18 +182,18 @@ public class Part1MainPartController implements Initializable {
         seleccionadaEstado.setText(" ");
         seleccionadaComentarios.setText(" ");
         SeleccionadaAlumno.setText(" ");
-        
+
         datePicker.valueProperty().addListener((obs, oldSelection, newSelection) -> {
             datePickerUpdate();
         });
-                
+
         tabelaTutorias.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 noAsistida.setDisable(false);
                 anular.setDisable(false);
                 confirmar.setDisable(false);
                 anadirComentario.setDisable(false);
-                
+
                 switch (newSelection.getEstado()) {
                     case NO_ASISTIDA:
                         noAsistida.setDisable(true);
@@ -369,12 +370,19 @@ public class Part1MainPartController implements Initializable {
     }
 
     @FXML
-    private void anadirComentario(ActionEvent event) {
+    private void anadirComentario(ActionEvent event) throws IOException {
         if (!datos.isEmpty() && tabelaTutorias.getSelectionModel().getSelectedItem() != null) {
             for (Tutoria tutoria : datos) {
                 if (tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha()
                         && tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()) {
-                    tutoria.setAnotaciones("Aqui pones el String");
+                    TextInputDialog dialog = new TextInputDialog("Anadir anotacion");
+                    dialog.setTitle("Anadir anotacion");
+                    dialog.setHeaderText("Introduce anotacion:");
+                    dialog.setContentText("");
+                    Optional<String> result = dialog.showAndWait();	
+                    if (result.isPresent()) {
+                        tabelaTutorias.getSelectionModel().getSelectedItem().setAnotaciones(result.get());
+                    }
                 }
             }
             AccesoBD.getInstance().salvar();
@@ -382,7 +390,7 @@ public class Part1MainPartController implements Initializable {
         }
     }
 
-   private void createCalendar() {
+    private void createCalendar() {
         try {
 //            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             datePicker = new DatePicker(LocalDate.now());
@@ -401,12 +409,17 @@ public class Part1MainPartController implements Initializable {
     }
 
     private void datePickerUpdate() {
-        if(esDiaLibre(datePicker.getValue().atStartOfDay())) anadirTutoriaBoton.setDisable(false);
-            else anadirTutoriaBoton.setDisable(true);
-            DayOfWeek day = DayOfWeek.from(datePicker.getValue());
-            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY)  anadirTutoriaBoton.setDisable(true);
+        if (esDiaLibre(datePicker.getValue().atStartOfDay())) {
+            anadirTutoriaBoton.setDisable(false);
+        } else {
+            anadirTutoriaBoton.setDisable(true);
+        }
+        DayOfWeek day = DayOfWeek.from(datePicker.getValue());
+        if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+            anadirTutoriaBoton.setDisable(true);
+        }
     }
-    
+
     class DiaCelda extends DateCell {
 
         String newline = System.getProperty("line.separator");
@@ -422,25 +435,27 @@ public class Part1MainPartController implements Initializable {
 
                 this.setText(this.getText() + "\r");
             } else {
-                if(esDiaLibre(item.atStartOfDay())) this.setText(this.getText() + "\rlibre");
-                else this.setText(this.getText() + "\rocupado");
+                if (esDiaLibre(item.atStartOfDay())) {
+                    this.setText(this.getText() + "\rlibre");
+                } else {
+                    this.setText(this.getText() + "\rocupado");
+                }
             }
         }
     }
-    
-    private boolean esDiaLibre(LocalDateTime day){
-                LocalTime t = LocalTime.of(0, 0);
-                for (Tutoria tutoria : datos) {
-                    if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(day.toLocalDate()) == 0) {
-                            t = t.plus(tutoria.getDuracion());
-                    }
-                }
-                return t.isBefore(LocalTime.of(12, 0));
+
+    private boolean esDiaLibre(LocalDateTime day) {
+        LocalTime t = LocalTime.of(0, 0);
+        for (Tutoria tutoria : datos) {
+            if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(day.toLocalDate()) == 0) {
+                t = t.plus(tutoria.getDuracion());
+            }
+        }
+        return t.isBefore(LocalTime.of(12, 0));
     }
 
     @FXML
     private void anadirTutoria(ActionEvent event) throws IOException {
-        //Parent root = FXMLLoader.load(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
         FXMLLoader miLoader = new FXMLLoader(getClass().getResource("/AddTutoria/FXMLAddTutoria.fxml"));
         Parent root = miLoader.load();
         Scene scene = new Scene(root);
