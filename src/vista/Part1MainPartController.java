@@ -12,6 +12,7 @@ import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import static java.time.temporal.ChronoUnit.MINUTES;
@@ -19,6 +20,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -50,8 +53,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableRow;
 import static javafx.scene.paint.Color.BLACK;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
+import modelo.Tutorias;
 
 /**
  * FXML Controller class
@@ -93,27 +100,27 @@ public class Part1MainPartController implements Initializable {
     @FXML
     private Text seleccionadaComentarios;
     @FXML
-    private Text seleccionadaDuracionYEstado;
-    @FXML
     private Text SeleccionadaAlumno;
+    @FXML
+    private Text seleccionadaDuracion;
+    @FXML
+    private Text seleccionadaEstado;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        createCalendar();
         datos = AccesoBD.getInstance().getTutorias().getTutoriasConcertadas();
-        //calendarioBox.getChildren().addAll(split);
 
         datos.clear();
-        Tutoria tu = new Tutoria();
+        Tutoria tu = new Tutoria(); 
         tu.setAsignatura(new Asignatura());
         tu.getAsignatura().setCodigo("COD");
         tu.getAsignatura().setDescripcion("descripcion");
-        LocalTime t = LocalTime.of(13, 10);
+        LocalTime t = LocalTime.of(8, 0);
         tu.setInicio(t);
-        Duration dur = Duration.of(30, MINUTES);
+        Duration dur = Duration.of(720, MINUTES);
         tu.setDuracion(dur);
         LocalDate d = LocalDate.of(2019, Month.DECEMBER, 3);
         tu.setFecha(d);
@@ -160,6 +167,94 @@ public class Part1MainPartController implements Initializable {
         datos.add(tu2);
         datos.add(tu3);
 
+        createCalendar();
+        datePickerUpdate();
+        setBotones();
+        setFactories();
+        visualizarTutoriasDelDia();
+    }
+
+    private void setBotones() {
+        seleccionadaNombre.setText(" ");
+        seleccionadaDuracion.setText(" ");
+        seleccionadaEstado.setText(" ");
+        seleccionadaComentarios.setText(" ");
+        SeleccionadaAlumno.setText(" ");
+        
+        datePicker.valueProperty().addListener((obs, oldSelection, newSelection) -> {
+            datePickerUpdate();
+        });
+                
+        tabelaTutorias.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                noAsistida.setDisable(false);
+                anular.setDisable(false);
+                confirmar.setDisable(false);
+                anadirComentario.setDisable(false);
+                
+                switch (newSelection.getEstado()) {
+                    case NO_ASISTIDA:
+                        noAsistida.setDisable(true);
+                        break;
+                    case ANULADA:
+                        anular.setDisable(true);
+                        break;
+                    case REALIZADA:
+                        confirmar.setDisable(true);
+                        break;
+                }
+
+                seleccionadaNombre.setText(newSelection.getAsignatura().getCodigo() + " " + newSelection.getAsignatura().getDescripcion());
+                seleccionadaDuracion.setText("Hora: " + newSelection.getInicio().toString() + " - " + newSelection.getInicio().plus(newSelection.getDuracion()).toString());
+                seleccionadaEstado.setText("Estado: " + newSelection.getEstado());
+                seleccionadaComentarios.setText(newSelection.getAnotaciones());
+
+                String alumnos = "";
+                for (Alumno alumno : newSelection.getAlumnos()) {
+                    alumnos += alumno.getNombre() + " " + alumno.getApellidos();
+                }
+                SeleccionadaAlumno.setText(alumnos);
+            } else {
+                noAsistida.setDisable(true);
+                anular.setDisable(true);
+                confirmar.setDisable(true);
+                anadirComentario.setDisable(true);
+                seleccionadaNombre.setText(" ");
+                seleccionadaDuracion.setText(" ");
+                seleccionadaEstado.setText(" ");
+                seleccionadaComentarios.setText(" ");
+                SeleccionadaAlumno.setText(" ");
+            }
+        });
+    }
+
+    private void setFactories() {
+        tabelaTutorias.setRowFactory(tv -> new TableRow<Tutoria>() {
+            @Override
+            public void updateItem(Tutoria item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null) {
+                    setStyle("");
+                } else {
+                    switch (item.getEstado()) {
+                        case NO_ASISTIDA:
+                            setStyle("-fx-background-color: lightsteelblue;");
+                            break;
+                        case ANULADA:
+                            setStyle("-fx-background-color: tomato;");
+                            break;
+                        case REALIZADA:
+                            setStyle("-fx-background-color: aquamarine;");
+                            break;
+                        case PEDIDA:
+                            setStyle("-fx-background-color: khaki;");
+                            break;
+                    }
+                }
+            }
+        });
+
         nombreColumn.setCellValueFactory(fila -> {
             String value = fila.getValue().getAsignatura().getCodigo() + " " + fila.getValue().getAsignatura().getDescripcion();
             StringProperty str = new SimpleStringProperty(value);
@@ -173,46 +268,19 @@ public class Part1MainPartController implements Initializable {
         estadoColumn.setCellValueFactory(fila -> {
             String value = fila.getValue().getEstado().toString();
             StringProperty str = new SimpleStringProperty(value);
+            switch (fila.getValue().getEstado()) {
+                case NO_ASISTIDA:
+                    noAsistida.setDisable(true);
+                    break;
+                case ANULADA:
+                    anular.setDisable(true);
+                    break;
+                case REALIZADA:
+                    confirmar.setDisable(true);
+                    break;
+            }
             return str;
         });
-
-        tabelaTutorias.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                noAsistida.setDisable(false);
-                anular.setDisable(false);
-                confirmar.setDisable(false);
-                anadirComentario.setDisable(false);
-                switch (newSelection.getEstado()) {
-                    case NO_ASISTIDA:
-                        noAsistida.setDisable(true);
-                        break;
-                    case ANULADA:
-                        anular.setDisable(true);
-                        break;
-                    case REALIZADA:
-                        confirmar.setDisable(true);
-                        break;
-                }
-            } else {
-                noAsistida.setDisable(true);
-                anular.setDisable(true);
-                confirmar.setDisable(true);
-                anadirComentario.setDisable(true);
-            }
-            
-            seleccionadaNombre.setText(newSelection.getAsignatura().getCodigo() + " " + newSelection.getAsignatura().getDescripcion());
-            seleccionadaDuracionYEstado.setText("Hora: " + newSelection.getInicio().toString() + " - " + newSelection.getInicio().plus(newSelection.getDuracion()).toString()
-                + " Estado: " + newSelection.getEstado());
-            seleccionadaComentarios.setText(newSelection.getAnotaciones());
-            
-            String alumnos = "";
-            for(Alumno alumno : newSelection.getAlumnos()){
-                alumnos = alumno.getNombre() + " " + alumno.getApellidos();
-            }
-            SeleccionadaAlumno.setText(alumnos);
-        });
-
-        visualizarTutoriasDelDia();
     }
 
     private void visualizarTutoriasDelDia() {
@@ -231,24 +299,6 @@ public class Part1MainPartController implements Initializable {
         tabelaTutorias.setItems(tutoriasDia);
         tabelaTutorias.refresh();
         fechaActual.setText(datePicker.getValue().toString());
-    }
-
-    private void createCalendar() {
-        try {
-//            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            datePicker = new DatePicker(LocalDate.now());
-            datePicker.setShowWeekNumbers(false);
-            datePicker.setDayCellFactory(cel -> new DiaCelda());
-
-            //datePicker.setStyle("-fx-font: 45px \"Arial\";");
-            DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
-            Node popupContent = datePickerSkin.getPopupContent();
-            //popupContent.set  .setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            caledarioPane.setCenter(popupContent);
-            datePicker.valueProperty().addListener((a, b, c) -> visualizarTutoriasDelDia());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -319,8 +369,43 @@ public class Part1MainPartController implements Initializable {
 
     @FXML
     private void anadirComentario(ActionEvent event) {
+        if (!datos.isEmpty() && tabelaTutorias.getSelectionModel().getSelectedItem() != null) {
+            for (Tutoria tutoria : datos) {
+                if (tabelaTutorias.getSelectionModel().getSelectedItem().getFecha() == tutoria.getFecha()
+                        && tabelaTutorias.getSelectionModel().getSelectedItem().getInicio() == tutoria.getInicio()) {
+                    tutoria.setAnotaciones("Aqui pones el String");
+                }
+            }
+            AccesoBD.getInstance().salvar();
+            visualizarTutoriasDelDia();
+        }
     }
 
+   private void createCalendar() {
+        try {
+//            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            datePicker = new DatePicker(LocalDate.now());
+            datePicker.setShowWeekNumbers(false);
+            datePicker.setDayCellFactory(cel -> new DiaCelda());
+
+            //datePicker.setStyle("-fx-font: 45px \"Arial\";");
+            DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
+            Node popupContent = datePickerSkin.getPopupContent();
+            //popupContent.set  .setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            caledarioPane.setCenter(popupContent);
+            datePicker.valueProperty().addListener((a, b, c) -> visualizarTutoriasDelDia());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void datePickerUpdate() {
+        if(esDiaLibre(datePicker.getValue().atStartOfDay())) anadirTutoriaBoton.setDisable(false);
+            else anadirTutoriaBoton.setDisable(true);
+            DayOfWeek day = DayOfWeek.from(datePicker.getValue());
+            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY)  anadirTutoriaBoton.setDisable(true);
+    }
+    
     class DiaCelda extends DateCell {
 
         String newline = System.getProperty("line.separator");
@@ -336,9 +421,20 @@ public class Part1MainPartController implements Initializable {
 
                 this.setText(this.getText() + "\r");
             } else {
-                this.setText(this.getText() + "\rlibre");
+                if(esDiaLibre(item.atStartOfDay())) this.setText(this.getText() + "\rlibre");
+                else this.setText(this.getText() + "\rocupado");
             }
         }
+    }
+    
+    private boolean esDiaLibre(LocalDateTime day){
+                LocalTime t = LocalTime.of(0, 0);
+                for (Tutoria tutoria : datos) {
+                    if (tutoria.getFecha() != null && tutoria.getFecha().compareTo(day.toLocalDate()) == 0) {
+                            t = t.plus(tutoria.getDuracion());
+                    }
+                }
+                return t.isBefore(LocalTime.of(12, 0));
     }
 
     private void scenep5(ActionEvent event) throws IOException {

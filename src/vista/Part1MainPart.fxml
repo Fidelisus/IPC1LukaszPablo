@@ -13,7 +13,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <GridPane prefHeight="567.0" prefWidth="1157.0" vgap="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Part1MainPartController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="771.9999694824219" minWidth="10.0" prefWidth="630.26669921875" />
@@ -24,7 +23,7 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <VBox spacing="15.0" GridPane.columnIndex="2">
+      <VBox spacing="10.0" GridPane.columnIndex="2">
          <children>
             <BorderPane prefHeight="15.0">
                <center>
@@ -35,7 +34,7 @@
                   </Text>
                </center>
             </BorderPane>
-            <HBox prefHeight="41.0" spacing="40.0">
+            <HBox prefHeight="28.0" prefWidth="513.0" spacing="42.0">
                <children>
                   <Button fx:id="anadirTutoriaBoton" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirTutoria" prefHeight="59.0" prefWidth="98.0" text="Anadir">
                      <font>
@@ -61,7 +60,7 @@
             </HBox>
             <BorderPane prefHeight="26.0" prefWidth="513.0">
                <center>
-                  <Button fx:id="anadirComentario" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirComentario" prefHeight="22.0" text="Anadir comentario" BorderPane.alignment="CENTER">
+                  <Button fx:id="anadirComentario" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#anadirComentario" prefHeight="22.0" text="Anadir comentario" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -78,11 +77,11 @@
                     </columns>
                   </TableView>
                </center>
-               <padding>
-                  <Insets right="10.0" />
-               </padding>
             </BorderPane>
          </children>
+         <padding>
+            <Insets right="10.0" top="10.0" />
+         </padding>
       </VBox>
       <VBox fx:id="calendarioBox" prefHeight="558.0" prefWidth="621.0" spacing="20.0">
          <children>
@@ -103,11 +102,22 @@
                   </Text>
                </bottom>
                <left>
-                  <Text fx:id="seleccionadaDuracionYEstado" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion y estado" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
+                  <BorderPane BorderPane.alignment="CENTER">
+                     <bottom>
+                        <Text fx:id="seleccionadaEstado" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                     </bottom>
+                     <top>
+                        <Text fx:id="seleccionadaDuracion" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                     </top>
+                  </BorderPane>
                </left>
                <right>
                   <Text fx:id="SeleccionadaAlumno" strokeType="OUTSIDE" strokeWidth="0.0" text="Alumno" BorderPane.alignment="CENTER">
